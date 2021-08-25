@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Category List{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        {% for flash in app.flashes("Success") %}
+            <p class="alert alert-success"> {{ flash }} </p>
+        {% endfor %}
+        {% for flash in app.flashes("Error") %}
+            <p class="alert alert-danger"> {{ flash }} </p>
+        {% endfor %}
+    </div>
+
+    <div class="container m-3">
+        <a class="btn btn-primary" href="{{ path ('category_create') }}">Create Category</a>
+        <br>
+        <br>
+        <table class="table table-striped">
+            <tr>
+                <th class="col">Category ID</th>
+                <th class="col">Category Name</th>
+                <th class="col">Actions</th>
+            </tr>
+            {% for category in categories %}
+                <tr>
+                    <td class="col">{{ category.id }}</td>
+                    <td class="col">{{ category.name }}</td>
+                    <td class="col">
+                        <a class="btn btn-info" href="{{ path ('category_detail', {'id': category.id}) }}">Detail</a>
+                        <a class="btn btn-warning"
+                           href="{{ path ( 'category_update' , {'id' : category.id } ) }}">Update</a>
+                        <a class="btn btn-danger" href="{{ path ( 'category_delete' , {'id' : category.id } ) }}"
+                           onclick="return confirm('Are you sure to delete ?')"
+                        >Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

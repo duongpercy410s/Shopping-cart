@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Product Detail {% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% for flash in app.flashes("Success") %}
+            <p class="alert alert-success"> {{ flash }} </p>
+        {% endfor %}
+        {% for flash in app.flashes("Error") %}
+            <p class="alert alert-danger"> {{ flash }} </p>
+        {% endfor %}
+        <br>
+        <a class="btn btn-success" href="{{ path ('product_list') }}">Product List</a>
+        <br><br>
+        <div class="border border-5  px-2">
+            <div class="row mt-3 mb-4">
+                <div class="col-md-4">
+                    {% if product.image != null %}
+                        <img class="card-img" src="{{ asset ('images/products/' ~ product.image) }}" width="340px"
+                             height="495px">
+                    {% else %}
+                        <img class="card-img" src="{{ asset ('images/products/product.png') }}" width="340px"
+                             height="495px">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <h1 class="mt-4 mt-md-0">{{ product.name }}</h1>
+                    <h2>{{ product.price }} $</h2>
+                    <hr>
+                    <b>Quantity: </b>{{ product.quantity }}
+                    <br>
+                    <b>Description: </b>{{ product.description }}
+                    <br>
+                    <b>Category: </b>
+                    {% if product.category is not null %}
+                        <a href="{{ path('category_detail', {'id' : product.category.id }) }}">
+                            {{ product.category.name }}
+                        </a>
+                    {% else %}
+                        <a>N/A</a>
+                    {% endif %}
+                    <hr>
+                    <a class="btn btn-warning" href="{{ path ('product_update', {'id': product.id}) }}">Update</a>
+                    <a class="btn btn-danger" href="{{ path ('product_delete', {'id': product.id}) }}"
+                       onclick="return confirm('Are you sure to delete ?')"
+                    >Delete</a>
+                    <br><br>
+                    <div class="border border-3">
+                        {{ form_start(form, {'attr' : {'class' : 'mt-4 p-4 bg-light'}}) }}
+                        <div class="form-group">
+                            {{ form_label(form.quantity) }}
+                            {{ form_widget(form.quantity, {
+                                'attr' : {
+                                    'class': 'form-control' ~ (form.quantity.vars.valid ? '' : 'is-invalid' )
+                                }
+                            }) }}
+                            <div class="invalid-feedback">
+                                {{ form_errors(form.quantity) }}
+                            </div>
+                        </div>
+                        <br>
+                        {{ form_widget(form.add, {'attr': {'class': 'btn btn-warning w-25'}}) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

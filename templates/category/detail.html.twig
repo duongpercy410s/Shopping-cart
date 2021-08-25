@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Category Detail {% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <a class="btn btn-primary" href="{{ path ('category_list') }}">Category List</a>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Category Name</th>
+                <th scope="col">Category Description</th>
+                <th scope="col">Category Date</th>
+                <th scope="col">Category Image</th>
+                <th scope="col">Category Products</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td scope="row">{{ category.name }}</td>
+                <td scope="row">{{ category.description }}</td>
+                <td scope="row">{{ category.date  | date("Y-m-d") }}</td>
+                <td scope="row">
+                    {% if category.image != null %}
+                        <img src="{{ asset ('images/categories/' ~ category.image) }}" width="80px"
+                             height="80px">
+                    {% else %}
+                        <img src="{{ asset ('images/categories/category.png') }}" width="60px"
+                             height="60px">
+                    {% endif %}
+                </td>
+                <td scope="row">
+                    {% for a in category.products %}
+                        {% if a is not null %}
+                            <a href="{{ path('product_detail', {'id' : a.id }) }}">
+                                {{ a.name }}
+                            </a>
+                        {% else %}
+                            N/A
+                        {% endif %}
+                        <br>
+                    {% endfor %}
+                </td>
+
+                {# ManyToOne relationship #}
+                {# <td scope="row"> #}
+                {# <a href="{{ path('author_detail', {'id' : category.author.id }) }}"> #}
+                {# {{ category.author.name }} #}
+                {# </a> #}
+                {# <br> #}
+                {# </td> #}
+
+                <td scope="row">
+                    <a class="btn btn-warning"
+                       href="{{ path ( 'category_update' , {'id' : category.id } ) }}">Update</a>
+                    <a class="btn btn-danger" href="{{ path ( 'category_delete' , {'id' : category.id } ) }}"
+                       onclick="return confirm('Are you sure to delete ?')"
+                    >Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

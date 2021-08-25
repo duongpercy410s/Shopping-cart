@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product List{% endblock %}
+
+{% block body %}
+    <div class="container m-3">
+        {% for flash in app.flashes("Success") %}
+            <p class="alert alert-success"> {{ flash }} </p>
+        {% endfor %}
+        {% for flash in app.flashes("Error") %}
+            <p class="alert alert-danger"> {{ flash }} </p>
+        {% endfor %}
+        <h1 class="mt-3 mb-4">Products</h1>
+        <a class="btn btn-primary" href="{{ path('product_create') }}">Create Product</a>
+        <br> <br>
+        <div class="row">
+            {% for product in products %}
+                <div class="card mb-3 mx-auto text-white bg-secondary" style="width: 18rem;">
+                    {% if product.image != null %}
+                        <img class="card-img-top mt-3" src="{{ asset ('images/products/' ~ product.image) }}" width="150px"
+                             height="200px">
+                    {% else %}
+                        <img class="card-img-top mt-3" src="{{ asset ('images/products/product.png') }}" width="150px"
+                             height="200px">
+                    {% endif %}
+                    <div class="card-body m-3 ">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        {% if product.category != null %}
+                            <p class="card-text">{{ product.description }}</p>
+                        {% else %}
+                            <p class="card-text">The content will be filled in the future</p>
+                        {% endif %}
+                        <div class="m-auto">
+                            <a class="btn btn-info" href="{{ path ('product_detail', {'id': product.id}) }}">Detail</a>
+                            <span class="h5 my-auto" style="padding-left: 62px">{{ product.price }}$</span>
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
